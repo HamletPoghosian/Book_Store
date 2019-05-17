@@ -5,14 +5,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Book_Store.Models;
+using Book_Store.ViewModels;
 
 namespace Book_Store.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly BookDBContext _context;
+        public HomeController(BookDBContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            return View();
+            List<Book> book = _context.BookItems.ToList();
+           
+            List<BookView> booklist=new List<BookView>();
+            for (int i = 0; i < book.Count; i++)
+            {
+                booklist[i].Id=book[i].Id;
+                booklist[i].Name = book[i].Name;
+                booklist[i].Author = book[i].Author;
+                booklist[i].Popular = book[i].Popular;
+                booklist[i].Price = book[i].Price;
+            }
+            return View(booklist);
         }
 
         public IActionResult About()
