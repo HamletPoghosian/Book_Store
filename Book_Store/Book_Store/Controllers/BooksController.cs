@@ -48,14 +48,21 @@ namespace Book_Store.Controllers
                 return NotFound();
             }
 
-            var book = await _context.BookItems
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _addBook.GetBookAsync(id.Value);
+            var bookView = new BookView
+            {
+                Id = book.Id,
+                Author = book.Author,
+                Name = book.Name,
+                Popular = book.Popular,
+                Price = book.Price
+            };
             if (book == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(bookView);
         }
 
         // GET: Books/Create
@@ -69,16 +76,25 @@ namespace Book_Store.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Author,Price,Popular")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Name,Author,Price,Popular")]BookCreateViewModel book)
         {
             if (ModelState.IsValid)
             {
                 book.Id = Guid.NewGuid();
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                var result = new BookItems
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    Author = book.Author,
+                    Popular = book.Popular,
+                    Price = book.Price
+                };
+                 await  _addBook.AddItemsAsync(result);
+               
+               
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View();
         }
 
         // GET: Books/Edit/5
