@@ -10,6 +10,7 @@ namespace Book_Store.Service
         Task<BookItems> AddItemsAsync(BookItems book);
         Task EditAsync(BookItems book);
         Task DeleteAsync(BookItems bookItems);
+        Task<BookItems> GetBooksAsync(Guid bookId);
         Task<BookItems> GetBookAsync(BookItems book);
     }
 }

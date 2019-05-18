@@ -35,15 +35,35 @@ namespace Book_Store.Service
             var entity = await _context.BookItems.SingleOrDefaultAsync(e => e.Id == bookItems.Id);
             _context.BookItems.Remove(entity);
             await _context.SaveChangesAsync();
-
-
         }
 
-        public Task EditAsync(BookItems book)
+        public async Task EditAsync(BookItems bookItems)
         {
-            throw new NotImplementedException();
+            var entity = await _context.BookItems.SingleOrDefaultAsync(e => e.Id == bookItems.Id);
+            entity.Id = bookItems.Id;
+            entity.Name = bookItems.Name;
+            entity.Popular = bookItems.Popular;
+            entity.Price = bookItems.Price;
+            entity.Author = bookItems.Author;
+
+            _context.BookItems.Update(entity);
+          await  _context.SaveChangesAsync();
         }
 
+        
+
+        public async Task<BookItems> GetBooksAsync(Guid bookId)
+        {
+            var entity = await _context.BookItems.SingleOrDefaultAsync(e => e.Id == bookId);
+            return new BookItems
+            {
+                Id = entity.Id,
+                Author=entity.Author,
+                Name=entity.Name,
+                Popular=entity.Popular,
+                Price=entity.Price
+            };
+        }
         public Task<BookItems> GetBookAsync(BookItems book)
         {
             throw new NotImplementedException();
