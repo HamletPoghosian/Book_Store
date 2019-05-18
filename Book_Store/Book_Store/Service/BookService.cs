@@ -50,23 +50,32 @@ namespace Book_Store.Service
           await  _context.SaveChangesAsync();
         }
 
-        
-
-        public async Task<BookItems> GetBooksAsync(Guid bookId)
+        public async Task<BookItems> GetBookAsync(Guid bookId)
         {
             var entity = await _context.BookItems.SingleOrDefaultAsync(e => e.Id == bookId);
             return new BookItems
             {
                 Id = entity.Id,
-                Author=entity.Author,
-                Name=entity.Name,
-                Popular=entity.Popular,
-                Price=entity.Price
+                Author = entity.Author,
+                Name = entity.Name,
+                Popular = entity.Popular,
+                Price = entity.Price
             };
         }
-        public Task<BookItems> GetBookAsync(BookItems book)
+
+        public async Task<IEnumerable<BookItems>> GetBooksAsync(BookItems book)
         {
-            throw new NotImplementedException();
+            var query = _context.BookItems.AsQueryable();
+            var entity = await query.ToListAsync();
+            return entity.Select(p => new BookItems
+            {
+                Id = p.Id,
+                Author = p.Author,
+                Name = p.Name,
+                Popular = p.Popular,
+                Price = p.Price
+            });
         }
+
     }
 }
