@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Book_Store.Models;
+using Book_Store.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +36,7 @@ namespace Book_Store
 
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BookDBContext>(options => options.UseSqlServer(connectionString));
+            services.AddBook();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

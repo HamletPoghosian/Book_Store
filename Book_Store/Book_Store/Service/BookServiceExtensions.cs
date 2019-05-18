@@ -13,4 +13,4 @@ namespace Book_Store.Service
             return serviceCollection.AddScoped<IBookService, BookService>();
         }
     }
-    }
+}
