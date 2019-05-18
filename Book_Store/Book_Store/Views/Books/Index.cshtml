@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Book_Store.ViewModels.BookView>
+﻿@model IEnumerable<BookView>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Book Page";
 }
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -51,47 +51,49 @@
         See Our Top Popular Books
     </p>
 </div>
-@for (int i = 0; i < 3; i++)
-{
 
-    <div class="rowbook">
 
-        @foreach (var item in Model)
+
+<div class="rowbook">
+
+
+    @foreach (var item in Model)
+    {
+
         {
-
-            {
-                <div class="childrow1">
+            <div class="childrow1">
+                <div>
                     <div>
-                        <div>
-                            <a class="childrow1a" asp-controller="Books" asp-action="Details" asp-route-Id="@item.Id">
-                                <p class="prow">
+                        <a class="childrow1a" asp-controller="Books" asp-action="Details" asp-route-Id="@item.Id">
+                            <p class="prow">
 
-                                    @item.Name
-                                </p>
-                                <p class="prow">
-                                    @item.Author
-                                </p>
-                                <p class="prowPrice">
-                                    @item.Price <span>&euro;</span>
-                                </p>
+                                @item.Name
+                            </p>
+                            <p class="prow">
+                                @item.Author
+                            </p>
+                            <p class="prowPrice">
+                                @item.Price <span>&euro;</span>
+                            </p>
 
-                                <p class="prow">
-                                    @{
-                                        for (int j = 0; j < item.Popular; j++)
-                                        {
-                                            <span class="star">&#9733;</span>
-                                        }
+                            <p class="prow">
+                                @{
+                                    for (int j = 0; j < item.Popular; j++)
+                                    {
+                                        <span class="star">&#9733;</span>
                                     }
-                                </p>
-                            </a>
-                        </div>
+                                }
+                            </p>
+                        </a>
                     </div>
                 </div>
-            }
-
+            </div>
         }
-    </div>
-}
+
+
+    }
+</div>
+
 
 <div class="SeePopBook">
     <p class="seepopbookp">
