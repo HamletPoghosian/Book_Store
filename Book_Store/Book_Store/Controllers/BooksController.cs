@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Book_Store.Models;
 using Book_Store.Service;
+using Book_Store.ViewModels;
 
 namespace Book_Store.Controllers
 {
@@ -25,7 +26,17 @@ namespace Book_Store.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var result = await _addBook.GetBooksAsync();
+            IEnumerable<BookItems> items = Enumerable.Empty<BookItems>();
+             items = await _addBook.GetBooksAsync();
+            
+            var result = items.Select(p => new BookView
+            {
+                Id = p.Id,
+                Author = p.Author,
+                Name = p.Name,
+                Popular = p.Popular,
+                Price = p.Price
+            });
             return View(result);
         }
 
