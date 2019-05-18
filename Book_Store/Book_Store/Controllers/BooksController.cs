@@ -6,22 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Book_Store.Models;
+using Book_Store.Service;
 
 namespace Book_Store.Controllers
 {
     public class BooksController : Controller
     {
         private readonly BookDBContext _context;
+        private readonly IBookService _addBook;
 
-        public BooksController(BookDBContext context)
+
+        public BooksController(BookDBContext context,IBookService book)
         {
             _context = context;
+            _addBook = book;
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BookItems.ToListAsync());
+            var result = await _addBook.GetBooksAsync();
+            return View(result);
         }
 
         // GET: Books/Details/5

@@ -63,7 +63,7 @@ namespace Book_Store.Service
             };
         }
 
-        public async Task<IEnumerable<BookItems>> GetBooksAsync(BookItems book)
+        public async Task<IEnumerable<BookItems>> GetBooksAsync()
         {
             var query = _context.BookItems.AsQueryable();
             var entity = await query.ToListAsync();

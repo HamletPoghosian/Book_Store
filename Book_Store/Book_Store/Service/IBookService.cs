@@ -11,6 +11,6 @@ namespace Book_Store.Service
         Task EditAsync(BookItems book);
         Task DeleteAsync(BookItems bookItems);
         Task<BookItems> GetBookAsync(Guid bookId);
-        Task<IEnumerable< BookItems>> GetBooksAsync(BookItems book);
+        Task<IEnumerable< BookItems>> GetBooksAsync();
     }
 }
