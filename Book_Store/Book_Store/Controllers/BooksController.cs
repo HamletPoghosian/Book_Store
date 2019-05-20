@@ -118,7 +118,7 @@ namespace Book_Store.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Author,Price,Popular")] Book book)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Author,Price,Popular")] BookView book)
         {
             if (id != book.Id)
             {
@@ -129,8 +129,16 @@ namespace Book_Store.Controllers
             {
                 try
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    var editBook = new BookItems
+                    {
+                        Id = book.Id,
+                        Author = book.Author,
+                        Name = book.Name,
+                        Popular = book.Popular,
+                        Price = book.Price
+                    };
+                   await _addBook.EditAsync(editBook);
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -156,24 +164,32 @@ namespace Book_Store.Controllers
                 return NotFound();
             }
 
-            var book = await _context.BookItems
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _addBook.GetBookAsync(id.Value);
+            var viewBook = new BookView
+            {
+                Id = book.Id,
+                Author = book.Author,
+                Name = book.Name,
+                Popular = book.Popular,
+                Price = book.Price
+            };
             if (book == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(viewBook);
         }
 
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
-            var book = await _context.BookItems.FindAsync(id);
-            _context.BookItems.Remove(book);
-            await _context.SaveChangesAsync();
+
+            var book = await _addBook.GetBookAsync(id.Value);
+            await _addBook.DeleteAsync(book);
+           
             return RedirectToAction(nameof(Index));
         }
 
